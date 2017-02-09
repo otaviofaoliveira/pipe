@@ -296,23 +296,23 @@ var total_instructions = 0;
 //Instruction(name,source_register1,source_register2,destination_register,operator)
 //Operator(name,execution_cycles,functional_unit,display_value)
 
-var fp_mult = new Operator("fp_mult",1,"fp_mult_unit","* (f)");
-var fp_add = new Operator("fp_add",1,"fp_add_sub_unit","+|- (f)");
-var fp_sub = new Operator("fp_sub",1,"fp_add_sub_unit","+|- (f)");
-var fp_div = new Operator("fp_div",1,"fp_div_unit","/ (p)");
+var fp_mult = new Operator("fp_mult",1,"fp_mult_unit","M");
+var fp_add = new Operator("fp_add",1,"fp_add_sub_unit","A");
+var fp_sub = new Operator("fp_sub",1,"fp_add_sub_unit","S");
+var fp_div = new Operator("fp_div",1,"fp_div_unit","D");
 var fp_ld = new Operator("fp_ld",1,"int_unit","EX");
 var fp_sd = new Operator("fp_sd",1,"int_unit","EX");
 
-var int_mult = new Operator("int_mult",1,"int_mult_unit","* (i)");
-var int_add  = new Operator("int_add",1,"int_unit","+|- (i)");
-var int_sub  = new Operator("int_sub",1,"int_unit","+|- (i)");
-var int_div  = new Operator("int_div",1,"int_div_unit","/ (i)");
+var int_mult = new Operator("int_mult",1,"int_mult_unit","EX(*)");
+var int_add  = new Operator("int_add",1,"int_unit","EX(+)");
+var int_sub  = new Operator("int_sub",1,"int_unit","EX(-)");
+var int_div  = new Operator("int_div",1,"int_div_unit","EX(/)");
 
 //------- operadoes adicionados por mim ------
 
 //imediate
-var int_daddi = new Operator("int_daddi",1,"int_unit","*+|- (i)");
-var int_subi = new Operator("int_subi",1,"int_unit","*+|- (i)");
+var int_daddi = new Operator("int_daddi",1,"int_unit","EX(*)");
+var int_subi = new Operator("int_subi",1,"int_unit","*EX(-)");
 
 //LW/SW
 var int_lw  = new Operator("int_lw",1,"int_unit","EX");

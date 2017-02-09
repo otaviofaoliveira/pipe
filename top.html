@@ -117,29 +117,30 @@
 		<tr>
 		<td>
 		<select name="operator" onChange="Change_Add_Instruction();">
-		<option value="fp_add">FP_Add
-		<option value="fp_sub">FP_Subtract
-		<option value="fp_mult">FP_Multiply
-		<option value="fp_div">FP_Divide
-		<option value="fp_ld">FP_Load
-		<option value="fp_sd">FP_Store
+		<option value="fp_add"> ADD.D
+		<option value="fp_sub"> SUB.D
+		<option value="fp_mult">MULT.D
+		<option value="fp_div"> DIV.D
+		<option value="fp_ld">  LD
+		<option value="fp_sd">  SD
 
-		<option value="int_add">INT_Add
-		<option	value="int_sub">INT_Subtract
-		<option value="int_mult">INT_Multiply
-		<option value="int_div">INT_Divide
+		<option value="int_add"> ADD
+		<option	value="int_sub"> SUB
+		<option value="int_mult"> MULT
+		<option value="int_div"> DIV
 
-		<option value="int_daddi">INT_Daddi
-		<option	value="int_subi">INT_Subtracti
+		<option value="int_lw"> LW
+		<option	value="int_sw"> SW
 
-		<option value="int_lw">INT_Lw
-		<option	value="int_sw">INT_Sw
+		<option value="int_daddi"> DADDUI
+		<option	value="int_subi"> SUBI
 
 		<option value="br_beq">BEQ
 		<option	value="br_bnez">BNEZ
 
-		<option value="int_ld">INT_Load
-		<option value="int_sd">INT_Store
+		<option value="int_ld"> LD
+		<option value="int_sd"> SD
+
 		<option value="br_taken">Br_Taken
 		<option value="br_untaken">Br_Untaken
 		</select>
