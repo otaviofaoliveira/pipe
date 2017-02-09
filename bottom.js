@@ -47,101 +47,108 @@ function Step(){
 
 
 					case "ID" :
-						// Check if this instruction can be executed by comparing it against all previous instructions.
-						for (i = (x - 1); i >= 0 ; i--){
+						if(parent.top_frame.instruction_array[x].operator.name == "fp_sd" || parent.top_frame.instruction_array[x].operator.name == "fp_ld"){
+							//if Store or load go to the next estage
+							parent.top_frame.instruction_array[x].pipeline_stage = "EX";
+							parent.top_frame.instruction_array[x].execute_counter++;
 
-							// If a previous instruction is in the EX stage and both instructions use the same functional unit.
-							if (parent.top_frame.instruction_array[i].pipeline_stage == "EX" && parent.top_frame.instruction_array[i].operator.functional_unit == parent.top_frame.instruction_array[x].operator.functional_unit){
-								// *** Structural Hazard ***
-								stall = 1;
-								break;
-							}
+						}else{
+							// Check if this instruction can be executed by comparing it against all previous instructions.
+							for (i = (x - 1); i >= 0 ; i--){
 
-							// If the destination register of a previous instruciton is the same and one of the source 
-							// registers of the current instruction.
-							else if ((parent.top_frame.instruction_array[i].destination_register == parent.top_frame.instruction_array[x].source_register1 || parent.top_frame.instruction_array[i].destination_register == parent.top_frame.instruction_array[x].source_register2)){
-								// We must check if data forwarding is enabled and handle that situation differently.
-								if (data_forwarding == 1){
-									// If forwarding is enabled and the previous instruction is a store or load
-									// and is not in the WB stage or further in the pipeline, stall.
-									if (parent.top_frame.instruction_array[i].operator.name == "fp_ld" || parent.top_frame.instruction_array[i].operator.name == "fp_sd"){
-										if (parent.top_frame.instruction_array[i].pipeline_stage != "WB" && parent.top_frame.instruction_array[i].pipeline_stage != " "){
-											// ** RAW Hazard **
-											stall = 1;
-											break;
-										}
-									}
-									// If forwarding is enabled and the previous instruction is not a store or load
-									// and is not in the MEM stage or further in the pipeline, stall.
-									else {
-										if (parent.top_frame.instruction_array[i].pipeline_stage != "MEM" && parent.top_frame.instruction_array[i].pipeline_stage != "WB" && parent.top_frame.instruction_array[i].pipeline_stage != " "){
-											// *** RAW Hazard **
-											stall = 1;
-											break;
-										}
-									}
-								}
-
-								else if (data_forwarding == 0){
-									// If forwarding is disabled and the previous instruction is not completed, stall.
-									if (parent.top_frame.instruction_array[i].pipeline_stage != " "){
-											// *** RAW Hazard **
-											stall = 1;
-											break;
-									}
-								}
-							}
-
-							// If the destination registers are the same for both instructions and the destination registers
-							// are not equal to "null."  The destination register will only equal "null" for BR and SD 
-							// instructions.
-							else if ((parent.top_frame.instruction_array[i].destination_register == parent.top_frame.instruction_array[x].destination_register) && (parent.top_frame.instruction_array[i].destination_register != "null")){
-
-								// If a previous instruction is in the EX stage and the remaining cycles for that
-								// previous instruction is greater than or equal to the current instruction's 
-								// execution cycles minus one.  (The minus one is there because the previous instructions
-								// will have already been moved into their "next" stage while the current instruciton 
-								// hasn't been executed yet.)
-								if ((parent.top_frame.instruction_array[i].pipeline_stage == "EX") && ((parent.top_frame.instruction_array[i].operator.execution_cycles - parent.top_frame.instruction_array[i].execute_counter) >= (parent.top_frame.instruction_array[x].operator.execution_cycles - 1))){
-									// *** WAW Hazard ***
+								// If a previous instruction is in the EX stage and both instructions use the same functional unit.
+								if (parent.top_frame.instruction_array[i].pipeline_stage == "EX" && parent.top_frame.instruction_array[i].operator.functional_unit == parent.top_frame.instruction_array[x].operator.functional_unit){
+									// *** Structural Hazard ***
 									stall = 1;
 									break;
 								}
 
-							}
+								// If the destination register of a previous instruciton is the same and one of the source 
+								// registers of the current instruction.
+								else if ((parent.top_frame.instruction_array[i].destination_register == parent.top_frame.instruction_array[x].source_register1 || parent.top_frame.instruction_array[i].destination_register == parent.top_frame.instruction_array[x].source_register2)){
+									// We must check if data forwarding is enabled and handle that situation differently.
+									if (data_forwarding == 1){
+										// If forwarding is enabled and the previous instruction is a store or load
+										// and is not in the WB stage or further in the pipeline, stall.
+										if (parent.top_frame.instruction_array[i].operator.name == "fp_ld" || parent.top_frame.instruction_array[i].operator.name == "fp_sd"){
+											if (parent.top_frame.instruction_array[i].pipeline_stage != "WB" && parent.top_frame.instruction_array[i].pipeline_stage != " "){
+												// ** RAW Hazard **
+												stall = 1;
+												break;
+											}
+										}
+										// If forwarding is enabled and the previous instruction is not a store or load
+										// and is not in the MEM stage or further in the pipeline, stall.
+										else {
+											if (parent.top_frame.instruction_array[i].pipeline_stage != "MEM" && parent.top_frame.instruction_array[i].pipeline_stage != "WB" && parent.top_frame.instruction_array[i].pipeline_stage != " "){
+												// *** RAW Hazard **
+												stall = 1;
+												break;
+											}
+										}
+									}
 
-							// If a previous instruction is in the EX stage and the remaining cycles for that
-							// previous instruction is equal to the current instruction's execution cycles minus one.
-							// (The minus one is there because the previous instructions will have already been moved into
-							// their "next" stage while the current instruciton hasn't been executed yet.)
-							else if ((parent.top_frame.instruction_array[i].pipeline_stage == "EX") && ((parent.top_frame.instruction_array[i].operator.execution_cycles - parent.top_frame.instruction_array[i].execute_counter) == (parent.top_frame.instruction_array[x].operator.execution_cycles - 1))){
-								
-								// *** WB will happen at the same time ***
-								stall = 1;
-								break;
-							}
-						} 	
-
-						// If no stalls have been detected.
-						if (stall != 1){
-							// If branch is taken, cancel following instruction and complete the execution of the branch.
-							if (parent.top_frame.instruction_array[x].operator.name == "br_taken"){
-								parent.top_frame.instruction_array[x].pipeline_stage = " ";
-								parent.top_frame.instruction_array[x].execute_counter++;
-								if ((x+1) < number_of_rows){
-									parent.top_frame.instruction_array[x+1].pipeline_stage = " ";
+									else if (data_forwarding == 0){
+										// If forwarding is disabled and the previous instruction is not completed, stall.
+										if (parent.top_frame.instruction_array[i].pipeline_stage != " "){
+												// *** RAW Hazard **
+												stall = 1;
+												break;
+										}
+									}
 								}
-								
-							}
-							// Complete the execution of the branch.
-							else if (parent.top_frame.instruction_array[x].operator.name == "br_untaken"){
-								parent.top_frame.instruction_array[x].pipeline_stage = " ";
-								parent.top_frame.instruction_array[x].execute_counter++;
-							}
-							// Move the instruction into the EX stage.
-							else {
-								parent.top_frame.instruction_array[x].pipeline_stage = "EX";
-								parent.top_frame.instruction_array[x].execute_counter++;
+
+								// If the destination registers are the same for both instructions and the destination registers
+								// are not equal to "null."  The destination register will only equal "null" for BR and SD 
+								// instructions.
+								else if ((parent.top_frame.instruction_array[i].destination_register == parent.top_frame.instruction_array[x].destination_register) && (parent.top_frame.instruction_array[i].destination_register != "null")){
+
+									// If a previous instruction is in the EX stage and the remaining cycles for that
+									// previous instruction is greater than or equal to the current instruction's 
+									// execution cycles minus one.  (The minus one is there because the previous instructions
+									// will have already been moved into their "next" stage while the current instruciton 
+									// hasn't been executed yet.)
+									if ((parent.top_frame.instruction_array[i].pipeline_stage == "EX") && ((parent.top_frame.instruction_array[i].operator.execution_cycles - parent.top_frame.instruction_array[i].execute_counter) >= (parent.top_frame.instruction_array[x].operator.execution_cycles - 1))){
+										// *** WAW Hazard ***
+										stall = 1;
+										break;
+									}
+
+								}
+
+								// If a previous instruction is in the EX stage and the remaining cycles for that
+								// previous instruction is equal to the current instruction's execution cycles minus one.
+								// (The minus one is there because the previous instructions will have already been moved into
+								// their "next" stage while the current instruciton hasn't been executed yet.)
+								else if ((parent.top_frame.instruction_array[i].pipeline_stage == "EX") && ((parent.top_frame.instruction_array[i].operator.execution_cycles - parent.top_frame.instruction_array[i].execute_counter) == (parent.top_frame.instruction_array[x].operator.execution_cycles - 1))){
+									
+									// *** WB will happen at the same time ***
+									stall = 1;
+									break;
+								}
+							} 	
+
+							// If no stalls have been detected.
+							if (stall != 1){
+								// If branch is taken, cancel following instruction and complete the execution of the branch.
+								if (parent.top_frame.instruction_array[x].operator.name == "br_taken"){
+									parent.top_frame.instruction_array[x].pipeline_stage = " ";
+									parent.top_frame.instruction_array[x].execute_counter++;
+									if ((x+1) < number_of_rows){
+										parent.top_frame.instruction_array[x+1].pipeline_stage = " ";
+									}
+									
+								}
+								// Complete the execution of the branch.
+								else if (parent.top_frame.instruction_array[x].operator.name == "br_untaken"){
+									parent.top_frame.instruction_array[x].pipeline_stage = " ";
+									parent.top_frame.instruction_array[x].execute_counter++;
+								}
+								// Move the instruction into the EX stage.
+								else {
+									parent.top_frame.instruction_array[x].pipeline_stage = "EX";
+									parent.top_frame.instruction_array[x].execute_counter++;
+								}
 							}
 						}
 
@@ -149,6 +156,7 @@ function Step(){
 
 
 					case "EX" :
+		
 						// If we have completed execution of the current instruction.
 						if (parent.top_frame.instruction_array[x].execute_counter < parent.top_frame.instruction_array[x].operator.execution_cycles){
 							parent.top_frame.instruction_array[x].pipeline_stage = "EX";
@@ -158,6 +166,7 @@ function Step(){
 						else{
 							parent.top_frame.instruction_array[x].pipeline_stage = "MEM";
 						}
+					
 						break;
 
 
