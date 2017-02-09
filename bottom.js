@@ -24,6 +24,7 @@ function Step(){
 	// ****** Multiple instructions in the array ******
 
 		stall = 0;
+		stall2 = 0;
 		x = 0;
 
 		while (x < number_of_rows){
@@ -127,28 +128,27 @@ function Step(){
 									break;
 								}
 							} 	
-
-							// If no stalls have been detected.
-							if (stall != 1){
-								// If branch is taken, cancel following instruction and complete the execution of the branch.
-								if (parent.top_frame.instruction_array[x].operator.name == "br_taken"){
-									parent.top_frame.instruction_array[x].pipeline_stage = " ";
-									parent.top_frame.instruction_array[x].execute_counter++;
-									if ((x+1) < number_of_rows){
-										parent.top_frame.instruction_array[x+1].pipeline_stage = " ";
-									}
-									
+						}
+						// If no stalls have been detected.
+						if (stall != 1){
+							// If branch is taken, cancel following instruction and complete the execution of the branch.
+							if (parent.top_frame.instruction_array[x].operator.name == "br_taken"){
+								parent.top_frame.instruction_array[x].pipeline_stage = " ";
+								parent.top_frame.instruction_array[x].execute_counter++;
+								if ((x+1) < number_of_rows){
+									parent.top_frame.instruction_array[x+1].pipeline_stage = " ";
 								}
-								// Complete the execution of the branch.
-								else if (parent.top_frame.instruction_array[x].operator.name == "br_untaken"){
-									parent.top_frame.instruction_array[x].pipeline_stage = " ";
-									parent.top_frame.instruction_array[x].execute_counter++;
-								}
-								// Move the instruction into the EX stage.
-								else {
-									parent.top_frame.instruction_array[x].pipeline_stage = "EX";
-									parent.top_frame.instruction_array[x].execute_counter++;
-								}
+								
+							}
+							// Complete the execution of the branch.
+							else if (parent.top_frame.instruction_array[x].operator.name == "br_untaken"){
+								parent.top_frame.instruction_array[x].pipeline_stage = " ";
+								parent.top_frame.instruction_array[x].execute_counter++;
+							}
+							// Move the instruction into the EX stage.
+							else {
+								parent.top_frame.instruction_array[x].pipeline_stage = "EX";
+								parent.top_frame.instruction_array[x].execute_counter++;
 							}
 						}
 
@@ -156,17 +156,39 @@ function Step(){
 
 
 					case "EX" :
-		
-						// If we have completed execution of the current instruction.
-						if (parent.top_frame.instruction_array[x].execute_counter < parent.top_frame.instruction_array[x].operator.execution_cycles){
-							parent.top_frame.instruction_array[x].pipeline_stage = "EX";
-							parent.top_frame.instruction_array[x].execute_counter++;
+						if(parent.top_frame.instruction_array[x].operator.name == "fp_sd" || parent.top_frame.instruction_array[x].operator.name == "fp_ld"){
+							//if store or load, verify stalls
+							for (i = (x - 1); i >= 0 ; i--){
+								if (parent.top_frame.instruction_array[i].pipeline_stage != "WB" && parent.top_frame.instruction_array[i].pipeline_stage != " "){
+												// ** RAW Hazard **
+												stall2 = 1;
+												break;
+								}
+							}
+
+							if(stall2 != 1){
+								if (parent.top_frame.instruction_array[x].execute_counter < parent.top_frame.instruction_array[x].operator.execution_cycles){
+								parent.top_frame.instruction_array[x].pipeline_stage = "EX";
+								parent.top_frame.instruction_array[x].execute_counter++;
+								}
+								// Move the instruction on to the next stage. 
+								else{
+									parent.top_frame.instruction_array[x].pipeline_stage = "MEM";
+								}
+							}
+
+
+						}else{
+							// If we have completed execution of the current instruction.
+							if (parent.top_frame.instruction_array[x].execute_counter < parent.top_frame.instruction_array[x].operator.execution_cycles){
+								parent.top_frame.instruction_array[x].pipeline_stage = "EX";
+								parent.top_frame.instruction_array[x].execute_counter++;
+							}
+							// Move the instruction on to the next stage. 
+							else{
+								parent.top_frame.instruction_array[x].pipeline_stage = "MEM";
+							}
 						}
-						// Move the instruction on to the next stage. 
-						else{
-							parent.top_frame.instruction_array[x].pipeline_stage = "MEM";
-						}
-					
 						break;
 
 
@@ -194,7 +216,7 @@ function Step(){
 				}
 
 				// If a stall occured, set the output to "s".
-				if (stall == 1){
+				if (stall == 1 || stall2 == 1){
 					Display_Stall();
 				}
 				// If an instruction is in the EX stage, output the functional unit.
