@@ -2,7 +2,7 @@
 
 <!-- Mirrored from www.ecs.umass.edu/ece/koren/architecture/windlx/help.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 02 Feb 2017 16:37:45 GMT -->
 <head>
-<title>Help</title>
+<title>Manual</title>
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -11,171 +11,192 @@
 </head>
 
 <body>
-<a href="#OVERVIEW">Overview</a><br>
-<a href="#REGISTERS">Registers</a><br>
-<a href="#ASSEMBLY">Assembly Instructions</a><br>
-<a href="#STRUCTURAL">Structural Units</a><br>
-<a href="#APPLICATION">Using the Application</a><br>
+<a href="#OVERVIEW">Visão Geral</a><br>
+<a href="#REGISTERS">Registradores</a><br>
+<a href="#ASSEMBLY">Instruções</a><br>
+<a href="#STRUCTURAL">Unidades Estruturais</a><br>
+<a href="#APPLICATION">Usando a Aplicação</a><br>
 
 <p>
 <hr>
 <a name="OVERVIEW"></a>
-<b>Overview</b><br>
-This application is a partial simulation of a MIPS Five Stage Pipeline.  The user can pick from
-a limited number of assembly instructions to be executed in the pipeline.  Instructions in the
-pipeline are checked for "possible" data and structural hazards before execution.  During
-execution, the instructions can be stepped through the stages of the pipeline one cycle at a time,
-or the final results can be displayed instantly.  The display shows where stalls have occurred in the
-pipeline.  Data forwarding can be enabled or disabled.
+<b>Visão Geral</b><br>
+  Esta aplicação é uma simulação de um MIPS Five Stage Pipeline. O usuário pode escolher 
+  um número limitado de instruções de montagem a serem executadas no pipeline. As instruções
+  na tabela são verificadas se existem dependências antes da execução. Durante a execução, as 
+  instruções podem ser executadas passo a passo ou simplesmente executada totalmente e exibidos
+  instantaneamente. Também o usuário se dispõe da opção Data Forwarding, que pode ser ativada 
+  a qualquer instante da execução.
 <p>
-The simulation does not allow the user to insert specific values into the registers and does not
-compute the actual result of any of the instructions.  This is simply a tool that should be used to
-detect possible data and structural hazards and to view instructions as they are executed on a five
-stage MIPS pipeline.
+  A simulação não permite ao usuário inserir valores específicos nos registros e não calcula o 
+  resultado real de nenhuma das instruções. Esta é simplesmente uma ferramenta que deve ser 
+  usada para detectar possíveis conflitos de dados e estruturais e para ver as instruções como 
+  eles são executados em um pipeline MIPS cinco estágios.
 <p>
-Instructions are issued "in-order" so WAR hazards can never occur while the instructions are being executed.  However, WAR hazards are
-listed under the "Potential Hazards" for completeness.
-<p>
-It is assumed that there is a sperate data cache and instruction cache so that stalls will never occur due to
-an instruction being read from memory at the same time as a piece of data is being read from or written to memory.
+  As instruções são inseridas em ordem, para que os perigos de WAR nunca possam ocorrer enquanto 
+  as instruções estão sendo executadas. 
 <p>
 <hr>
 <a name="REGISTERS"></a>
-<b>Registers</b><br>
-The simulation supports 16 Floating-Point Registers (R1 - R16) and 32 Integer Registers (F1 - F32).
+<b>REgistradores</b><br>
+  A simulação suporta 16 registradores de ponto flutuante (F0 - F15) e 32 registros de inteiro (R1 - R32).
 <p>
 <hr>
 <a name="ASSEMBLY"></a>
-<b>Assembly Instructions</b><br>
-The following assembly instructions are supported:
+<b>Instruções</b><br>
+ São Suportadas as seguintes instruções:
 <p>
-<b>FP_Add(dest, src1, src2)</b> <br>
-The floating-point add instruction adds the two source registers and stores the result in the destination register.  This
-instruction can take from 1 - 20 cycles to complete execution.  The execution time is selectable by the user and is always
-the same as the FP_Sub instruction.
+<b>ADD.D(dest, src1, src2)</b> <br>
+  A instrução de adição de ponto flutuante adiciona os dois registos de origem (src1 e src2) e 
+  armazena o resultado no registo de destino (dest). Esta instrução pode levar de 1 a 20 ciclos
+  para completar a execução. O tempo   de execução é selecionável pelo usuário e é sempre o mesmo 
+  que a instrução FP_Sub.
 <p>
-<b>FP_Sub(dest, src1, src2)</b> <br>
-The floating-point subtract instruction subtracts the two source registers and stores the result in the destination register.  This
-instruction can take from 1 - 20 cycles to complete execution.  The execution time is selectable by the user and is always
-the same as the FP_Add instruction.
+<b>SUB.D(dest, src1, src2)</b> <br>
+  A instrução de subtração de ponto flutuante subtrai os dois registros de origem (src1 e src2) e 
+  armazena o resultado no   registrador de destino (dest). Esta instrução pode levar de 1 a 20 
+  ciclos para completar a execução. O tempo de execução é selecionável pelo usuário e é sempre o 
+  mesmo que a instrução FP_Add.
 <p>
-<b>FP_Mult(dest, src1, src2)</b> <br>
-The floating-point multiply instruction multiplies the two source registers and stores the result in the destination register.  This
-instruction can take from 1 - 20 cycles to complete execution.  The execution time is selectable by the user.
+<b>MULT.D(dest, src1, src2)</b> <br>
+  A instrução de multiplicação de ponto flutuante multiplica os dois registos de origem (src1 e src2) e 
+  armazena o resultado no registo de destino (dest). Esta instrução pode levar de 1 a 20 ciclos para completar 
+  a execução. O tempo de execução é selecionável pelo usuário.
 <p>
-<b>FP_Div(dest, src1, src2)</b> <br>
-The floating-point divide instruction divides the two source registers and stores the result in the destination register.  This
-instruction can take from 1 - 20 cycles to complete execution.  The execution time is selectable by the user.
+<b>DIV.D(dest, src1, src2)</b> <br>
+  A instrução de divisão de ponto flutuante divide os dois registos de origem (src1 e src2) e armazena o resultado 
+  no registo de destino(dest). Esta instrução pode levar de 1 a 20 ciclos para completar a execução. O tempo de execução é 
+  selecionável pelo usuário.
 <p>
-<b>FP_Load(dest, offset, src1)</b> <br>
-The floating-point load instruction uses an integer value stored in source register # 1 and an offset to compute the
-memory address from which data will be loaded into the destination register.  This instruction takes 1 cycle during the execution stage to
-compute the memory address.  The value from memory is available after the MEM stage.  It is assumed that the requested data is always available
-in the data cache so that the pipeline will never have to stall while data is read from the memory.
+<b>LD(dest, offset, src1)</b> <br>
+  A instrução de LOAD de ponto flutuante usa um valor inteiro armazenado no registro de origem (src1) e um deslocamento (offset)
+  para calcular o endereço de memória a partir do qual os dados serão carregados no registrador de destino (dest). Esta instrução 
+  leva 1 ciclo durante o estágio de execução para calcular o endereço de memória. O valor da memória está disponível após 
+  o estágio MEM. Presume-se que os dados solicitados estão sempre disponíveis no cache de dados para que o pipeline nunca 
+  terá de parar enquanto os dados são lidos da memória.
 <p>
-<b>FP_Store(src1, offset, src2)</b> <br>
-The floating-point store instruction uses an integer value stored in source register # 2 and an offset to compute the
-memory address to which the data in source register # 1 will be stored.  This instruction takes 1 cycle during the execution stage to
-compute the memory address.  The value is written to memory by the end of the MEM stage.  It is assumed that the data to be written to memory
-is already available in the data cache so that the pipeline will never have to stall while data is written to memory.  This instruction does not go through the WB stage.
+<b>SD(src1, offset, src2)</b> <br>
+  A instrução de STORE de ponto flutuante utiliza um valor inteiro armazenado no registo de origem (src2) 
+  e um deslocamento (offset) para calcular o endereço de memória para o qual os dados no registo de origem (src1) serão armazenados.
+  Esta instrução leva 1 ciclo durante o estágio de execução para calcular o endereço de memória. O valor é gravado 
+  na memória até o final do estágio MEM. Presume-se que os dados a serem gravados na memória já estão disponíveis 
+  no cache de dados para que o pipeline nunca terá de parar enquanto os dados são gravados na memória. Esta instrução 
+  não passa pelo estágio WB.<p>
+<b>ADD(dest, src1, src2)</b> <br>
+  A instrução ADD adiciona os dois registos de origem (src1 e src2) e armazena o resultado no registo de destino (dest). Esta 
+  instrução leva 1 ciclo para completar a execução.
 <p>
-<b>INT_Add(dest, src1, src2)</b> <br>
-The integer add instruction adds the two source registers and stores the result in the destination register.  This
-instruction takes 1 cycle to complete execution.
+<b>SUB(dest, src1, src2)</b> <br>
+  A instrução de subtração de inteiros subtrai os dois registos de origem (src1 e src2) e armazena o resultado no 
+  registo de destino (dest). Esta instrução leva 1 ciclo para completar a execução.
 <p>
-<b>INT_Sub(dest, src1, src2)</b> <br>
-The integer subtract instruction subtracts the two source registers and stores the result in the destination register.  This
-instruction takes 1 cycle to complete execution.
+<b>MULT(dest, src1, src2)</b> <br>
+  A instrução multiplicação inteira multiplica os dois registos de origem (src1 e src2) e armazena o resultado no 
+  registo de destino (dest). Esta instrução leva 1 ciclo para completar a execução.
 <p>
-<b>INT_Mult(dest, src1, src2)</b> <br>
-The integer multiply instruction multiplies the two source registers and stores the result in the destination register.  This
-instruction takes 1 cycle to complete execution.
+<b>DIV(dest, src1, src2)</b> <br>
+  A instrução de divisão de inteiro divide os dois registros de origem (src1 e src2) e armazena o resultado no 
+  registrador de destino (dest). Esta instrução pode levar de 1 a 20 ciclos para completar a execução. O tempo de execução é 
+  selecionável pelo usuário.
 <p>
-<b>INT_Div(dest, src1, src2)</b> <br>
-The integer divide instruction divides the two source registers and stores the result in the destination register.  This
-instruction can take from 1 - 20 cycles to complete execution.  The execution time is selectable by the user.
+<b>LW(dest, offset, src1)</b> <br>
+  A instrução de LOAD inteira utiliza um valor inteiro armazenado no registo de origem (src1) e um deslocamento (offset) para 
+  calcular o endereço de memória a partir do qual os dados serão carregados para o registo de destino (dest). Esta instrução leva 
+  1 ciclo durante o estágio de execução para calcular o endereço de memória. O valor da memória está disponível após
+  o estágio MEM. Presume-se que os dados solicitados estão sempre disponíveis no cache de dados para que o pipeline 
+  nunca terá de parar enquanto os dados são lidos da memória.
+
 <p>
-<b>INT_Load(dest, offset, src1)</b> <br>
-The integer load instruction uses an integer value stored in source register # 1 and an offset to compute the
-memory address from which data will be loaded into the destination register.  This instruction takes 1 cycle during the execution stage to
-compute the memory address.  The value from memory is available after the MEM stage.  It is assumed that the requested data is always available
-in the data cache so that the pipeline will never have to stall while data is read from the memory.
+<b>SW(src1, offset, src2)</b> <br>
+  A instrução de STORE de inteiro usa um valor inteiro armazenado no registro de origem (src2) e um deslocamento (offset) 
+  para calcular o endereço de memória para o qual os dados no registro de fonte (src1) serão armazenados. Esta instrução 
+  leva 1 ciclo durante o estágio de execução para calcular o endereço de memória. O valor é gravado na memória até o 
+  final do estágio MEM. Presume-se que os dados a serem gravados na memória já estão disponíveis no cache de dados 
+  para que o pipeline nunca terá de parar enquanto os dados são gravados na memória. Esta instrução não passa pelo estágio WB.
 <p>
-<b>INT_Store(src1, offset, src2)</b> <br>
-The integer store instruction uses an integer value stored in source register # 2 and an offset to compute the
-memory address to which the data in source register # 1 will be stored.  This instruction takes 1 cycle during the execution stage to
-compute the memory address.  The value is written to memory by the end of the MEM stage.  It is assumed that the data to be written to memory
-is already available in the data cache so that the pipeline will never have to stall while data is written to memory.  This instruction does not go through the WB stage.
+  <b>DADDUI(src1, src2, offset)</b> <br>
+  A instrução ADD adiciona um inteiro (offset) imediatamente ao registo de origem (src2) e armazena o resultado no registo de 
+  destino (src1).
 <p>
-<b>BR_Taken(offset, src1)</b> <br>
-The branch taken instruction uses an integer value stored in source register #1 and an offset to compute the branch target memory address.
-This instruction assumes that the branch condition evaluates to "TRUE."  Thus if there is an instruction immediately following this instruction
-in the pipeline, it must be canceled.  It is assumed that the branch target address and the branch condition evaluation can be determined by the
-end if the ID stage.  Thus this instruction never enters the EX stage.
+  <b>SUBI(src1, src2, offset)</b> <br>
+  A instrução de subtração imediata de inteiros subtrai um valor (offset) do registos de origem (src2) e armazena o resultado no 
+  registo de destino (src1).
+  <p>
+<b>BEQ(offset, src1)</b> <br>
+  A instrução de ramificação usada usa um valor inteiro armazenado no registro de fonte (src1) e um deslocamento (offset) para 
+  calcular o endereço de memória de alvo de ramificação. Esta instrução assume que a condição de ramificação é
+  avaliada como "TRUE". Assim, se houver uma instrução imediatamente após esta instrução no pipeline, ela deve
+  ser cancelada. Assume-se que o endereço de alvo de ramificação ea avaliação de condição de ramificação podem
+  ser determinados pelo final se o estágio de ID. Assim, esta instrução nunca entra no estágio EX.
 <p>
-<b>BR_Untaken(offset, src1)</b> <br>
-The branch untaken instruction uses an integer value stored in source register #1 and an offset to compute the branch target memory address.
-This instruction assumes that the branch condition evaluates to "FALSE."  Thus if there is an instruction immediately following this instruction
-in the pipeline, it will continue to execute without any problems.  It is assumed that the branch target address and the branch condition evaluation
-can be determined by the end if the ID stage.  Thus this instruction never enters the EX stage.
+<b>BNEZ(offset, src1)</b> <br>
+  A instrução untaken de ramo usa um valor inteiro armazenado no registro de origem (src1) e um deslocamento (offset) 
+  para calcular o endereço de memória de alvo de ramificação. Esta instrução assume que a condição de ramificação 
+  é avaliada como "FALSE". Assim, se houver uma instrução imediatamente após esta instrução no pipeline, ela 
+  continuará executando sem problemas. Supõe-se que o endereço de alvo de ramificação e a avaliação de condição 
+  de ramificação podem ser determinados pelo final se o estágio de ID. Assim, esta instrução nunca entra no estágio EX.
 <p>
 <hr>
 <a name="STRUCTURAL"></a>
-<b>Structural Units</b><br>
-This simulation contains 6 structural units that can cause a structural hazard.  <br>
-1. &nbsp; Floating Point Add/Subtract Unit. <br>
-2. &nbsp; Floating Point Multiply Unit. <br>
-3. &nbsp; Floating Point Divide Unit. <br>
-4. &nbsp; Integer Add/Subtract Unit. <br>
-5. &nbsp; Integer Multiply Unit. <br>
-6. &nbsp; Integer Divide Unit. <p>
-Note: The load and store instructions use the Integer Add/Subtract Unit to compute the memory address.  Therefore, a floating-point load or store
-can be stalled by a floating-point add or subtract that takes longer than one cycle to complete.
+<b>Unidades Estruturais</b><br>
+  Esta simulação contém 6 unidades estruturais que podem causar um risco estrutural.<br>
+  1. Unidade de adição / subtração de ponto flutuante.<br>
+  2. Unidade de Multiplicação de Ponto Flutuante.<br>
+  3. Unidade de divisão de ponto flutuante.<br>
+  4. Adicionar / subtrair unidade inteira.<br>
+  5. Inteiro Multiplique a Unidade.<br>
+  6. Divisão Inteira Unidade.<p>
+  Nota: As instruções de LOAD e STORE usam a Unidade de adição / subtração de números inteiros para calcular
+  o endereço de memória. Portanto, um LOAD de ponto flutuante ou STORE pode ser paralisada por uma adição ou 
+  subtração de ponto flutuante que leva mais de um ciclo para concluir.
 <p>
 <hr>
 <a name="APPLICATION"></a>
-<b>Using the Application</b><br>
-The application loads into two frames.  Initially, the bottom frame will be empty.
+<b>Usando a Aplicação</b><br>
+  A aplicação é dividida em duas partes: a parte superior (Top frame) e a parte inferior (Bottom frame). Inicialmente
+  o Bottom frame não exibira nada.
 <p>
-<b>Top Frame</b><br>
-The top frame allows the user to enter and remove instructions
-from the pipeline.  It also allows the user to set the execution time for several of the instructions and to enable or
-disable data forwarding.
+<b>Parte Superior (Top Frame)</b><br>
+  A parte superior permite que o usuário insira e remova instruções do pipeline. Ele também permite que o usuário defina 
+  o tempo de execução para várias das instruções e para habilitar ou desabilitar o adiantamento de dados.
 <p>
-<b>Adding an Instruction</b> <br>
-To add an instruction to the pipeline, the user first selects the name of the instruction they would like to add from the dropdown box.  Once the name of
-the instruction has been selected, the user can select the registers they would like to associate with this instruction following the <a href="#ASSEMBLY">Assembly Instruction</a> format.  When the registers have been selected, the user should click the "Insert Instruction" button.
-This will cause the current state of the pipeline to appear in the bottom frame.  The user can continue entering instructions repeating this
-procedure at any time.
+<b>Adicionando uma Instrução</b> <br>
+  Para adicionar uma instrução ao pipeline, o usuário primeiro seleciona o nome da instrução que gostaria de adicionar.
+  Uma vez seleccionado o nome da instrução, o usuário pode seleccionar os registos que gostaria de associar a esta instrução 
+  seguindo o formato de instrução. Quando os registros foram selecionados, o usuário deve clicar no botão "Inserir Instrução".
+  Isso fará com que o estado atual do pipeline apareça na parte inferior (Bottom frame). O usuário pode continuar inserindo 
+  instruções repetindo este procedimento a qualquer momento.
 <p>
-<b>Removing an Instruction</b> <br>
-In the event that a user makes a mistake when entering an instruction into the pipeline, the last instruction can always be removed from the
-pipeline by clicking on the "Remove Instruction" button.
+<b>Removendo uam Instrução</b> <br>
+  No caso de um usuário cometer um erro ao inserir uma instrução no pipeline, a última instrução inserida pode ser removida 
+  do pipeline clicando no botão "Remover Instrução".
 <p>
-<b>Data Forwarding</b> <br>
-Data forwarding can be enabled by placing a checkmark in the "Data Forwarding" checkbox.  Data forwarding can be disabled by removing the checkmark
-from the "Data Forwarding" checkbox.  Whenever this value is changed, the bottom frame is updated to reflect the new state of the pipeline.
+<b>Adiantamento dos Dados</b> <br>
+  O adiantamento de dados pode ser ativado selecionando a caixa de seleção "Habilitar adiantamento". O adiantamento de dados 
+  pode ser desativado clicando novamente na caixa de seleção de "Habilitar adiantamento". Sempre que esse valor é alterado, 
+  a parte inferior é atualizada para exibir o novo estado do pipeline.
 <p>
-<b>Resetting the Application.</b> <br>
-The application can be reset at any time by clicking on the "Reset Application" button.
+<b>Resetando a Aplicação.</b> <br>
+  O aplicação pode ser resetada a qualquer momento clicando no botão "Resetar Aplicação".
 <p>
-<b>Help</b> <br>
-This help page can be accessed at any time by clicking on the "Help" button.
+<b>Ajuda</b> <br>
+  Esta página pode ser acessada a qualquer momento clicando no botão "Ajuda" e irá exibir o manual da aplicação.
 <p>
-<b>Setting the Instruction Execution Time</b> <br>
-There are 4 functional units for which the execution time can be modified by the user.  To change the execution time for a particular functional unit,
-select the dropdown box next to the functional until and select the number of cycles that the functional unit should take to complete an operation.
-Whenever an execution time is changed, the bottom frame is updated to reflect the new state of the pipeline.
+<b>Configurando o Tempo de Execução da Instrução</b> <br>
+  Existem 4 unidades funcionais para as quais o tempo de execução pode ser modificado pelo usuário (ADD.D/SUB.D, MULT.D,
+  DIV.D, DIV). Para alterar o tempo de execução de uma determinada unidade funcional, selecione a caixa ao lado da função
+  e selecione o número de ciclos que a unidade funcional deve tomar para concluir uma operação. Sempre que um tempo de 
+  execução é alterado, a parte inferior é atualizada para exibir o novo estado do pipeline.
 <p>
-<b>Bottom Frame</b><br>
-The bottom frame is divided into two sections.  The upper section shows the instructions in the pipeline and what stage each instruction is in as it is
-executed.  The lower section is used to list the potential structural and data hazards.
+<b>Parte Inferior (Bottom Frame)</b><br>
+  A parte inferior é dividida em duas seções. A seção superior mostra as instruções no pipeline e em que estágio cada 
+  instrução está e como é executada. A seção inferior é usada para listar os potenciais riscos estruturais e de dados.
 <p>
-<b>Stepping Through the Instructions</b><br>
-The user can step through the instructions in the pipeline one cycle at a time by clicking on the "Step" button repeatedly.
+<b>Executando passo-a-passo</b><br>
+O usuário pode percorrer as instruções na pipeline um ciclo de cada vez clicando no botão "Executar Passo-a-Passo" repetidamente.
 <p>
-<b>Executing All Instructions</b><br>
-The user can execute all instruction to completion in one step by clicking on the "Execute All Instructions" button.
+<b>Executando todas Instruções</b><br>
+O usuário pode executar todas as instruções clicando no botão "Executar tudo".
 <p>
 
 
