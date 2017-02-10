@@ -87,12 +87,16 @@ function Change_Add_Instruction(){
 		LoadIntegerRegisters(document.insert_instruction_table.source_register2);
 		LoadIntegerRegisters(document.insert_instruction_table.destination_register);
 
-	}else if(selected_value == "br_beq" || selected_value == "br_bnez"){
+	}else if(selected_value == "br_beq"){
 		LoadIntegerRegisters(document.insert_instruction_table.source_register1);
 		LoadIntegerRegisters(document.insert_instruction_table.source_register2);
 		LoadOffsetField(document.insert_instruction_table.destination_register);
 	}
-	else if (selected_value.substring(0,3) == "int"){
+	else if(selected_value == "br_bnez"){
+		LoadIntegerRegisters(document.insert_instruction_table.source_register1);
+		LoadOffsetField(document.insert_instruction_table.source_register2);
+		ClearRegisters(document.insert_instruction_table.destination_register);
+	}else if (selected_value.substring(0,3) == "int"){
 		LoadIntegerRegisters(document.insert_instruction_table.source_register1);
 		LoadIntegerRegisters(document.insert_instruction_table.source_register2);
 		LoadIntegerRegisters(document.insert_instruction_table.destination_register);

@@ -2,248 +2,248 @@
 
 <!-- Mirrored from www.ecs.umass.edu/ece/koren/architecture/windlx/top.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 02 Feb 2017 16:37:43 GMT -->
 <HEAD>
-<SCRIPT LANGUAGE="JavaScript" SRC="top.js">
-</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" SRC="top.js"></SCRIPT>
+ <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 <style>
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    footer {
+      background-color: #5f5f5f;
+      padding: 25px;
+    }
+
+  </style>
 </HEAD>
 
 <BODY onLoad="Page_Load_Complete();" onUnload="CloseHelp();">
 
-<table border="0" align="center">
-	<tr>
-	
-	<td rowspan="3"> 
-	<form name="execution_time_table" style="margin-bottom:0;">
-	<table border="1" valign="middle">
-		<tr align="center">
-		<td>
-		Instruction
-		</td>
-		<td>
-		Execution Cycles
-		</td>
-		</tr>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Pipeline - Trabalho de Arquitetura 2</a>
+    </div>
+  </div>
+</nav>
 
-		<tr align="center">
-		<td>
-		FP_Add/Sub
-		</td>
-		<td>
-		<select name="fp_add_sub_new" onChange="Change_Execution_Time(fp_add, this.options[this.selectedIndex].value); Change_Execution_Time(fp_sub, 		this.options[this.selectedIndex].value);">
-		<option value="1">1
-		<option value="2">2
-		<option value="3">3
-		<option value="4">4
-		<option value="5">5
-		<option value="6">6
-		<option value="7">7
-		<option value="8">8
-		<option value="9">9
-		<option value="10">10
-		</select>
-		</td>
-		</tr>
+<div class="container" style="margin-top: 10px">
+	<div class="row">
+			<div class="col-md-6">
+				<div class="h2">Adicionar Instrução</div>
+				<div class="row">
+					<div class="col-md-12">
+						<form name="insert_instruction_table" class="form-inline">
+							<div class="form-group">
+						
+								<select name="operator" onChange="Change_Add_Instruction();" class="btn btn-default">
+								<option value="fp_add"> ADD.D
+								<option value="fp_sub"> SUB.D
+								<option value="fp_mult">MULT.D
+								<option value="fp_div"> DIV.D
+								<option value="fp_ld">  LD
+								<option value="fp_sd">  SD
 
-		<tr align="center">
-		<td>
-		FP_Multiply
-		</td>
-		<td>
-		<select name="fp_mult_new" onChange="Change_Execution_Time(fp_mult, this.options[this.selectedIndex].value);">
-		<option value="1">1
-		<option value="2">2
-		<option value="3">3
-		<option value="4">4
-		<option value="5">5
-		<option value="6">6
-		<option value="7">7
-		<option value="8">8
-		<option value="9">9
-		<option value="10">10
-		</select>
-		</td>
-		</tr>
+								<option value="int_add"> ADD
+								<option	value="int_sub"> SUB
+								<option value="int_mult"> MULT
+								<option value="int_div"> DIV
 
-		<tr align="center">
-		<td>
-		FP_Divide
-		</td>
-		<td>
-		<select name="fp_div_new" onChange="Change_Execution_Time(fp_div, this.options[this.selectedIndex].value);">
-		<option value="1">1
-		<option value="2">2
-		<option value="3">3
-		<option value="4">4
-		<option value="5">5
-		<option value="6">6
-		<option value="7">7
-		<option value="8">8
-		<option value="9">9
-		<option value="10">10
-		</select>
-		</td>
-		</tr>
+								<option value="int_lw"> LW
+								<option	value="int_sw"> SW
 
-		<tr align="center">
-		<td>
-		INT_Divide
-		</td>
-		<td>
-		<select name="int_div_new" onChange="Change_Execution_Time(int_div, this.options[this.selectedIndex].value);">
-		<option value="1">1
-		<option value="2">2
-		<option value="3">3
-		<option value="4">4
-		<option value="5">5
-		<option value="6">6
-		<option value="7">7
-		<option value="8">8
-		<option value="9">9
-		<option value="10">10
-		</select>
-		</td>
-		</tr>
-	</table>
-	</form>
-	</td>
+								<option value="int_daddi"> DADDUI
+								<option	value="int_subi"> SUBI
 
-	<td width="10%" rowspan="3">
-	&nbsp;
-	</td>
+								<option value="br_beq">BEQ
+								<option	value="br_bnez">BNEZ
+								</select>
+							</div>
+							<div class="form-group">
+								<select name="destination_register" class="btn btn-default">
+								<option value="1">1
+								<option value="2">2
+								<option value="3">3
+								<option value="4">4
+								<option value="5">5
+								<option value="6">6
+								<option value="7">7
+								<option value="8">8
+								<option value="9">9
+								<option value="Offset">Offset
+								</select>
+							</div>	
+							<div class="form-group">
+								<select name="source_register1" class="btn btn-default">
+								<option value="1">1
+								<option value="2">2
+								<option value="3">3
+								<option value="4">4
+								<option value="5">5
+								<option value="6">6
+								<option value="7">7
+								<option value="8">8
+								<option value="9">9
+								<option value="Offset">Offset
+								</select>
+							</div>		
+							<div class="form-group">
+								<select name="source_register2" class="btn btn-default">
+								<option value="1">1
+								<option value="2">2
+								<option value="3">3
+								<option value="4">4
+								<option value="5">5
+								<option value="6">6
+								<option value="7">7
+								<option value="8">8
+								<option value="9">9
+								<option value="Offset">Offset
+								</select>
+							</div>	
+						</form>
+					</div>
 
-	
-	<td valign="middle" align="right">
-	<form name="insert_instruction_table">
-	<table align="right" border="0" width="100%">
-		<tr>
-		<td>
-		<select name="operator" onChange="Change_Add_Instruction();">
-		<option value="fp_add"> ADD.D
-		<option value="fp_sub"> SUB.D
-		<option value="fp_mult">MULT.D
-		<option value="fp_div"> DIV.D
-		<option value="fp_ld">  LD
-		<option value="fp_sd">  SD
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<form name="forwarding_form" class="form-inline">
+							<div class="form-group">
+								<input type="button" width="185" value="Inserir Instrucao" onClick="Instruction_Insert();" class="btn btn-primary">
+							</div>
+							<div class="form-group">
+								<input type="button" width="185" value="Remover Instrucao" onClick="RemoveLastInstruction();" class="btn btn-warning">
+							</div>
+							<div class="form-group">
+							<input type="button" width="185" value=" Resetar Aplicacao  " onClick="parent.location.href='main.html';" class="btn btn-danger">
+							</div>
+							<div class="form-group">
+								<input type="button" value="Ajuda" onClick="OpenHelp();" class="btn btn-info">
+							</div>
+							<div class="row">
+								<div class="col-md-12" class="form-block">
+									<div class="form-group">
+										<input name="enabled_checkbox" type="checkbox" onClick="UpdateDisplay();">
+										Habilitar adiantamento
+									</div>
+								</div>
+							</div>
+						</form>
+					
+					</div>
+				</div>
 
-		<option value="int_add"> ADD
-		<option	value="int_sub"> SUB
-		<option value="int_mult"> MULT
-		<option value="int_div"> DIV
+			</div>
 
-		<option value="int_lw"> LW
-		<option	value="int_sw"> SW
+			<div class="col-md-6">
+				<form name="execution_time_table" style="margin-bottom:0;">
+				<table border="1" valign="middle" class="table table-sm">
+					<tr>
+						<td colspan="2" align="center">
+							<div class="h4">Ciclos de Execução</div>
+						</td>
+					</tr>
+					<tr align="center">
+					<td>
+					Instrução
+					</td>
+					<td>
+					Numero de Ciclos
+					</td>
+					</tr>
 
-		<option value="int_daddi"> DADDUI
-		<option	value="int_subi"> SUBI
+					<tr align="center">
+					<td>
+					ADD.D/SUB.D
+					</td>
+					<td>
+					<select name="fp_add_sub_new" onChange="Change_Execution_Time(fp_add, this.options[this.selectedIndex].value); Change_Execution_Time(fp_sub, 		this.options[this.selectedIndex].value);" class="btn btn-default">
+					<option value="1">1
+					<option value="2">2
+					<option value="3">3
+					<option value="4">4
+					<option value="5">5
+					<option value="6">6
+					<option value="7">7
+					<option value="8">8
+					<option value="9">9
+					<option value="10">10
+					</select>
+					</td>
+					</tr>
 
-		<option value="br_beq">BEQ
-		<option	value="br_bnez">BNEZ
+					<tr align="center">
+					<td>
+					MULT.D
+					</td>
+					<td>
+					<select name="fp_mult_new" onChange="Change_Execution_Time(fp_mult, this.options[this.selectedIndex].value);" class="btn btn-default">
+					<option value="1">1
+					<option value="2">2
+					<option value="3">3
+					<option value="4">4
+					<option value="5">5
+					<option value="6">6
+					<option value="7">7
+					<option value="8">8
+					<option value="9">9
+					<option value="10">10
+					</select>
+					</td>
+					</tr>
 
-		<option value="int_ld"> LD
-		<option value="int_sd"> SD
+					<tr align="center">
+					<td>
+					DIV.D
+					</td>
+					<td>
+					<select name="fp_div_new" onChange="Change_Execution_Time(fp_div, this.options[this.selectedIndex].value);" class="btn btn-default">
+					<option value="1">1
+					<option value="2">2
+					<option value="3">3
+					<option value="4">4
+					<option value="5">5
+					<option value="6">6
+					<option value="7">7
+					<option value="8">8
+					<option value="9">9
+					<option value="10">10
+					</select>
+					</td>
+					</tr>
 
-		<option value="br_taken">Br_Taken
-		<option value="br_untaken">Br_Untaken
-		</select>
-		</td>
-		
-		<td>
-		<select name="destination_register">
-		<option value="1">1
-		<option value="2">2
-		<option value="3">3
-		<option value="4">4
-		<option value="5">5
-		<option value="6">6
-		<option value="7">7
-		<option value="8">8
-		<option value="9">9
-		<option value="Offset">Offset
-		</select>
-		</td>	
+					<tr align="center">
+					<td>
+					DIV
+					</td>
+					<td>
+					<select name="int_div_new" onChange="Change_Execution_Time(int_div, this.options[this.selectedIndex].value);" class="btn btn-default">
+					<option value="1">1
+					<option value="2">2
+					<option value="3">3
+					<option value="4">4
+					<option value="5">5
+					<option value="6">6
+					<option value="7">7
+					<option value="8">8
+					<option value="9">9
+					<option value="10">10
+					</select>
+					</td>
+					</tr>
+				</table>
+				</form>
+			</div>
 
-		<td>
-		<select name="source_register1">
-		<option value="1">1
-		<option value="2">2
-		<option value="3">3
-		<option value="4">4
-		<option value="5">5
-		<option value="6">6
-		<option value="7">7
-		<option value="8">8
-		<option value="9">9
-		<option value="Offset">Offset
-		</select>
-		</td>		
-
-		<td>
-		<select name="source_register2">
-		<option value="1">1
-		<option value="2">2
-		<option value="3">3
-		<option value="4">4
-		<option value="5">5
-		<option value="6">6
-		<option value="7">7
-		<option value="8">8
-		<option value="9">9
-		<option value="Offset">Offset
-		</select>
-		</td>	
-
-		<td align="right">
-		<input type="button" width="185" value="   Insert Instruction    " onClick="Instruction_Insert();">
-		</td>
-		</tr>
-	</table>
-	</form>
-	</td>
-
-	<td width="10%" rowspan="3">
-	&nbsp;
-	</td>
-
-	</tr>
-
-	<tr>
-	<td align="right" valign="middle">
-	<form name="forwarding_form">
-	<table width="100%" align="right" border="0">
-		<tr>
-		<td align="center">
-		<input name="enabled_checkbox" type="checkbox" onClick="UpdateDisplay();">
-		Data Forwarding
-		</td>
-
-		<td align="right">
-		<input type="button" width="185" value="Remove Instruction" onClick="RemoveLastInstruction();">
-		</td>
-		</tr>
-	</table>
-	</form>
-	</td>
-	</tr>
-
-	<tr>
-	<td valign="middle" align="right">
-	<form>
-	<table width="100%" align="right" border="0">
-		<tr>
-		<td align="center">
-		<input type="button" value="Help" onClick="OpenHelp();">
-		</td>
-
-		<td align="right">
-		<input type="button" width="185" value=" Reset Application  " onClick="parent.location.href='main.html';">
-		</td>
-		</tr>
-	</table>
-	</form>
-	</td>
-	</tr>
-
-	
-</table>
+	</div>
+</div>
 
 </BODY>
 

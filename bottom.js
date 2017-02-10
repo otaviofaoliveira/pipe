@@ -363,7 +363,7 @@ function Check_Depencency(){
 					// non_forward_delay should be zero.  Add one for the additional cycle before data will be ready. (After MEM Stage)
 					if ((i - j) < parent.top_frame.instruction_array[j].operator.execution_cycles + non_forward_delay + 1){
 						dep_exists = 1;
-						Add_Dependency(("RAW: Instructions " + j + " and " + i + ".  Register " + parent.top_frame.instruction_array[j].destination_register + "."));
+						Add_Dependency(("RAW: Instruções " + j + " e " + i + ".  Registrador " + parent.top_frame.instruction_array[j].destination_register + "."));
 					}
 				}
 				else {
@@ -371,7 +371,7 @@ function Check_Depencency(){
 					// for the earlier instruction, we have a hazard.
 					if ((i - j) < parent.top_frame.instruction_array[j].operator.execution_cycles + non_forward_delay){
 						dep_exists = 1
-						Add_Dependency(("RAW: Instructions " + j + " and " + i + ".  Register " + parent.top_frame.instruction_array[j].destination_register + "."));
+						Add_Dependency(("RAW: Instruções " + j + " e " + i + ".  Registrador " + parent.top_frame.instruction_array[j].destination_register + "."));
 					}
 				}
 			}
@@ -381,7 +381,7 @@ function Check_Depencency(){
 			// If the destination register for the current instruction has the same value as one of the previous instructions source registers
 			// and the difference between the instructions is greater than the difference between the execution cycles of the two instructions.
 			if (((parent.top_frame.instruction_array[j].source_register1 == parent.top_frame.instruction_array[i].destination_register) || (parent.top_frame.instruction_array[j].source_register2 == parent.top_frame.instruction_array[i].destination_register)) && (i - j) < abs(parent.top_frame.instruction_array[j].operator.execution_cycles - parent.top_frame.instruction_array[i].operator.execution_cycles)){
-				Add_Dependency(("WAR: Instructions " + j + " and " + i + ".  Register " + parent.top_frame.instruction_array[i].destination_register + "."));
+				Add_Dependency(("WAR: Instruções " + j + " e " + i + ".  Registrador " + parent.top_frame.instruction_array[i].destination_register + "."));
 			}
 
 
@@ -392,7 +392,7 @@ function Check_Depencency(){
 			// The destination register field will be "null" when the operator doesn't support a destination register. (BR and SD)
 			if ((parent.top_frame.instruction_array[i].destination_register == parent.top_frame.instruction_array[j].destination_register) && ((i - j) <= abs(parent.top_frame.instruction_array[j].operator.execution_cycles - parent.top_frame.instruction_array[i].operator.execution_cycles))){
 				if (parent.top_frame.instruction_array[j].destination_register != "null"){
-					Add_Dependency(("WAW: Instructions " + j + " and " + i + ".  Register " + parent.top_frame.instruction_array[j].destination_register + "."));
+					Add_Dependency(("WAW: Instruções " + j + " e " + i + ".  Registrador " + parent.top_frame.instruction_array[j].destination_register + "."));
 				}
 			}
 
@@ -401,19 +401,19 @@ function Check_Depencency(){
 			// If two instructions use the same functional unit and the difference between the two instructions is less than the 
 			// execution cycles of the earlier instruction.
 			if ((parent.top_frame.instruction_array[i].operator.functional_unit == parent.top_frame.instruction_array[j].operator.functional_unit) &&  ((i - j) < parent.top_frame.instruction_array[j].operator.execution_cycles)){ 
-				Add_Dependency("Structural: Instructions " + j + " and " + i + ".  Unit: " + parent.top_frame.instruction_array[j].operator.display_value);		
+				Add_Dependency("Estrutural: Instruções " + j + " e " + i + ".  unidade: " + parent.top_frame.instruction_array[j].operator.display_value);		
 			}
 
 			// *** Test for simultaneous MEM/WB ***
 			if ((dep_exists == 0) && ((i - j) == (parent.top_frame.instruction_array[j].operator.execution_cycles - parent.top_frame.instruction_array[i].operator.execution_cycles))){
-				Add_Dependency("Instructions " + j + " and " + i + " will enter the MEM and WB stage at the same time.");	
+				Add_Dependency("Instruções " + j + " e " + i + " vão utilizar MEM e WB ao mesmo tempo.");	
 			}
 		}
 	} // End of outer for loop.
 
 	// If no dependencies were found, output a message.
 	if (document.dependency_form.display.value == ""){
-		document.dependency_form.display.value = "No Hazards Found.";
+		document.dependency_form.display.value = "Nenhum Hazards Encontrado.";
 	}
 }
 
@@ -422,7 +422,7 @@ function Check_Depencency(){
 function BuildPipeline(){
 
 	// *** Create the table to display the pipeline ***
-	document.write("<p><form name='instruction_table'><table border='1'><tr><td colspan='2'></td><td align='center' colspan='" + number_of_columns + "'><b>CPU Cycles</b></td></tr><tr><td colspan='2' align='center'><b>Instruction<b></td>");
+	document.write("<p><form name='instruction_table'><table class='table-sm table-striped'><tr><td colspan='2'></td><td align='center' colspan='" + number_of_columns + "'><b>Ciclos de CPU</b></td></tr><tr><td colspan='2' align='center'><b>Instruções<b></td>");
 
 	// Write out the cycle numbers at the top of the table.
 	for (x = 0 ; x < number_of_columns ; x++){
@@ -455,7 +455,7 @@ function BuildPipeline(){
 
 	// Create the buttons at the bottom of the display.
 	//====================================================================
-	document.write("</table><input type='button' value='Step' onClick='Step();'>&nbsp;<input type='button' value='Execute All Instructions' 	onClick='Step_To_End();'></form>");
+	document.write("</table><div class='form-group' style='margin-top: 20px;'> <input type='button' value='Executar Passo-a-Passo' onClick='Step();' class='btn btn-info'>&nbsp;<input type='button' value='Executar tudo' class='btn btn-primary'	onClick='Step_To_End();'></div></form>");
 }
 
 
