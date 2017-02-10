@@ -421,6 +421,7 @@ function Check_Depencency(){
 
 function BuildPipeline(){
 
+
 	// *** Create the table to display the pipeline ***
 	document.write("<p><form name='instruction_table'><table class='table-sm table-striped'><tr><td colspan='2'></td><td align='center' colspan='" + number_of_columns + "'><b>Ciclos de CPU</b></td></tr><tr><td colspan='2' align='center'><b>Instruções<b></td>");
 
@@ -433,18 +434,67 @@ function BuildPipeline(){
 
 	// Create each row in the table.
 	for (x = 0 ; x < number_of_rows ; x++){
+		var nome;
+		if(parent.top_frame.instruction_array[x].operator.name == "fp_mult"){
+			nome = "MULTD";
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "fp_add"){
+			nome = "ADDD";
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "fp_sub"){
+			nome = "SUBD";
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "fp_div"){
+			nome = "DIVD";
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "fp_ld"){
+			nome = "LD";
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "fp_sd"){
+			nome = "SD"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_mult"){
+			nome = "MULT"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_add"){
+			nome = "ADD"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_sub"){
+			nome = "SUB";
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_div"){
+			nome = "DIV"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_daddi"){
+			nome = "DADDUI"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_subi"){
+			nome = "SUBI"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_lw"){
+			nome = "LW";
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "int_sw"){
+			nome = "SW"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "br_beq"){
+			nome = "BEQ"
+		}
+		if(parent.top_frame.instruction_array[x].operator.name == "br_bnez"){
+			nome = "BNZE"
+		}
 		// Insert the Instructions into the table.
 		if (parent.top_frame.instruction_array[x].destination_register == "null"){
 			// Store instructions must be handled in a special way.
 			if (parent.top_frame.instruction_array[x].operator.name == "fp_sd"  || parent.top_frame.instruction_array[x].operator.name == "int_sd"){
-				document.write("<tr><td>&nbsp<b>" + x + "</b>&nbsp</td><td><input name='instruction' readonly='1' size='25' value='" + parent.top_frame.instruction_array[x].operator.name + " (" + parent.top_frame.instruction_array[x].source_register1 + ", Offset, " + parent.top_frame.instruction_array[x].source_register2 + ")'>");
+				document.write("<tr><td>&nbsp<b>" + x + "</b>&nbsp</td><td><input name='instruction' readonly='1' size='25' value='" + nome + " (" + parent.top_frame.instruction_array[x].source_register1 + ", Offset, " + parent.top_frame.instruction_array[x].source_register2 + ")'>");
 			}
 			else {
-				document.write("<tr><td>&nbsp<b>" + x + "</b>&nbsp</td><td><input name='instruction' readonly='1' size='25' value='" + parent.top_frame.instruction_array[x].operator.name + " (" + parent.top_frame.instruction_array[x].source_register1 + ", " + parent.top_frame.instruction_array[x].source_register2 + ")'>");
+				document.write("<tr><td>&nbsp<b>" + x + "</b>&nbsp</td><td><input name='instruction' readonly='1' size='25' value='" + nome + " (" + parent.top_frame.instruction_array[x].source_register1 + ", " + parent.top_frame.instruction_array[x].source_register2 + ")'>");
 			}
 		}
 		else {
-			document.write("<tr><td>&nbsp<b>" + x + "</b>&nbsp</td><td><input name='instruction' readonly='1' size='25' value='" + parent.top_frame.instruction_array[x].operator.name + " (" + parent.top_frame.instruction_array[x].destination_register + ", " + parent.top_frame.instruction_array[x].source_register1 + ", " + parent.top_frame.instruction_array[x].source_register2 + ")'>");
+			document.write("<tr><td>&nbsp<b>" + x + "</b>&nbsp</td><td><input name='instruction' readonly='1' size='25' value='" + nome + " (" + parent.top_frame.instruction_array[x].destination_register + ", " + parent.top_frame.instruction_array[x].source_register1 + ", " + parent.top_frame.instruction_array[x].source_register2 + ")'>");
 		}
 		// Create the input boxes for each column in the row.
 		for (y = 0 ; y < number_of_columns ; y++){

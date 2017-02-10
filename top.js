@@ -40,7 +40,7 @@ function Change_Execution_Time(operator, new_value){
 //Responsavel por mudar a instrução de acordo com as escolha do usuário
 function Change_Add_Instruction(){
 	var selected_value = document.insert_instruction_table.operator.options[document.insert_instruction_table.operator.selectedIndex].value;
-	console.log("selected_value: " + selected_value);
+
 	if (selected_value == "fp_ld"){
 		LoadOffsetField(document.insert_instruction_table.source_register1);
 		LoadIntegerRegisters(document.insert_instruction_table.source_register2);
